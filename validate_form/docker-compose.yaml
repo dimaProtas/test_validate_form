@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    command: bash -c "python manage.py loaddata app/fixtures/001_form_temlate.json app/fixtures/002_form_data.json"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/service
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+
+  mongodb:
+    environment:
+      MONGO_INITDB_DATABASE: mydatabase
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    hostname: mongodb
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ../data-mongodb:/data/db
